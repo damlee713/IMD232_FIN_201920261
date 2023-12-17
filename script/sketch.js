@@ -8,7 +8,6 @@ const SCISSORS = 'scissors';
 
 function setup() {
   setCanvasContainer('canvas', 1, 1, true);
-
   const w = width / colNum;
   const h = w;
   for (let row = 0; row < rowNum; row++) {
@@ -64,7 +63,7 @@ function setup() {
     }
   }
 
-  frameRate(15);
+  frameRate(5);
   background(255);
   tiles.forEach((each) => {
     each.display();
@@ -85,6 +84,18 @@ function draw() {
   tiles.forEach((each) => {
     each.display();
   });
+}
+
+function mousePressed() {
+  // Change the state of all cells in the grid
+  const states = [ROCK, PAPER, SCISSORS];
+  for (let i = 0; i < tiles.length; i++) {
+    const cell = tiles[i];
+    const currentState = cell.state;
+    const newState = states[(states.indexOf(currentState) + 1) % states.length];
+    cell.state = newState;
+    cell.nextState = newState;
+  }
 }
 
 class Cell {
@@ -141,7 +152,24 @@ class Cell {
       [SCISSORS]: color(255, 0, 0),
     };
 
-    fill(colorMap[this.state]);
+    const mouseDist = dist(
+      this.x + this.width / 2,
+      this.y + this.height / 2,
+      mouseX,
+      mouseY
+    );
+    const invertColor = mouseDist < 50; // Adjust the distance threshold as needed
+
+    fill(
+      invertColor ? 255 - red(colorMap[this.state]) : red(colorMap[this.state]),
+      invertColor
+        ? 255 - green(colorMap[this.state])
+        : green(colorMap[this.state]),
+      invertColor
+        ? 255 - blue(colorMap[this.state])
+        : blue(colorMap[this.state])
+    );
+
     stroke(0);
     rect(this.x, this.y, this.width, this.height);
   }
