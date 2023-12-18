@@ -87,11 +87,20 @@ function draw() {
 }
 
 function mousePressed() {
-  // Change the state of all cells in the grid
   const states = [ROCK, PAPER, SCISSORS];
+  const randomColorMapping = {
+    [ROCK]: color(random(255), random(255), random(255)),
+    [PAPER]: color(random(255), random(255), random(255)),
+    [SCISSORS]: color(random(255), random(255), random(255)),
+  };
+
   for (let i = 0; i < tiles.length; i++) {
     const cell = tiles[i];
     const currentState = cell.state;
+
+    // Change the color mapping randomly for each cell
+    cell.colorMapping = randomColorMapping;
+
     const newState = states[(states.indexOf(currentState) + 1) % states.length];
     cell.state = newState;
     cell.nextState = newState;
@@ -105,7 +114,13 @@ class Cell {
     this.width = width;
     this.height = height;
     this.state = initialState;
+    this.nextState = initialState;
     this.neighbors = [];
+    this.colorMapping = {
+      [ROCK]: color(255, 255, 0),
+      [PAPER]: color(0, 0, 255),
+      [SCISSORS]: color(255, 0, 0),
+    };
   }
 
   setNeighbors(neighbors) {
@@ -146,28 +161,24 @@ class Cell {
   }
 
   display() {
-    const colorMap = {
-      [ROCK]: color(255, 255, 0),
-      [PAPER]: color(0, 0, 255),
-      [SCISSORS]: color(255, 0, 0),
-    };
-
     const mouseDist = dist(
       this.x + this.width / 2,
       this.y + this.height / 2,
       mouseX,
       mouseY
     );
-    const invertColor = mouseDist < 50; // Adjust the distance threshold as needed
+    const invertColor = mouseDist < 50;
 
     fill(
-      invertColor ? 255 - red(colorMap[this.state]) : red(colorMap[this.state]),
       invertColor
-        ? 255 - green(colorMap[this.state])
-        : green(colorMap[this.state]),
+        ? 255 - red(this.colorMapping[this.state])
+        : red(this.colorMapping[this.state]),
       invertColor
-        ? 255 - blue(colorMap[this.state])
-        : blue(colorMap[this.state])
+        ? 255 - green(this.colorMapping[this.state])
+        : green(this.colorMapping[this.state]),
+      invertColor
+        ? 255 - blue(this.colorMapping[this.state])
+        : blue(this.colorMapping[this.state])
     );
 
     stroke(0);
