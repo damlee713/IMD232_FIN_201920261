@@ -64,14 +64,14 @@ function setup() {
   }
 
   frameRate(5);
-  background(255);
+  background(0);
   tiles.forEach((each) => {
     each.display();
   });
 }
 
 function draw() {
-  background(255);
+  background(0);
 
   tiles.forEach((each) => {
     each.calcNextState();
