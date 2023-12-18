@@ -179,7 +179,7 @@ class Cell {
         : blue(this.colorMapping[this.state])
     );
 
-    stroke(0);
+    noStroke();
     rect(this.x, this.y, this.width, this.height);
   }
 }
