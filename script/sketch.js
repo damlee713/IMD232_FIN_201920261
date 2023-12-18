@@ -97,8 +97,6 @@ function mousePressed() {
   for (let i = 0; i < tiles.length; i++) {
     const cell = tiles[i];
     const currentState = cell.state;
-
-    // Change the color mapping randomly for each cell
     cell.colorMapping = randomColorMapping;
 
     const newState = states[(states.indexOf(currentState) + 1) % states.length];
