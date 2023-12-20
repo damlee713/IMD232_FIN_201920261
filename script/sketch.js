@@ -1,3 +1,6 @@
+//Original code from:https://twotwelve.uk/blog/rock-paper-scissors/
+//Joshua O'Sullivan
+
 const tiles = [];
 const rowNum = 50,
   colNum = 50;
